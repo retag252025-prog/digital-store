@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>لوحة التحكم</title>
+<style>
+    body { font-family: Arial; background:#f2f2f2; padding:20px; }
+    .box { background:#fff; padding:20px; max-width:500px; margin:auto; border-radius:10px; }
+    input, textarea { width:100%; padding:10px; margin:10px 0; border-radius:6px; border:1px solid #ccc; }
+    button { background:#007bff; color:#fff; padding:12px; border:none; border-radius:6px; width:100%; cursor:pointer; }
+</style>
+<script>
+    const PASSWORD = "1234"; // غيرها لأي كلمة سر
+
+    function login() {
+        let p = prompt("ادخل كلمة السر:");
+        if (p === PASSWORD) {
+            document.getElementById("panel").style.display = "block";
+        } else {
+            alert("كلمة السر غلط");
+        }
+    }
+
+    function saveProduct() {
+        let name = document.getElementById("name").value;
+        let price = document.getElementById("price").value;
+        let file = document.getElementById("file").value;
+
+        if (!name || !price || !file) {
+            alert("اكمل كل البيانات");
+            return;
+        }
+
+        let product = { name, price, file };
+
+        let list = JSON.parse(localStorage.getItem("products") || "[]");
+        list.push(product);
+        localStorage.setItem("products", JSON.stringify(list));
+
+        alert("تم إضافة المنتج بنجاح!");
+    }
+</script>
+</head>
+<body onload="login()">
+
+<div id="panel" style="display:none;">
+    <div class="box">
+        <h2>لوحة التحكم – إضافة منتج جديد</h2>
+
+        <input id="name" type="text" placeholder="اسم المنتج">
+        <input id="price" type="text" placeholder="السعر">
+        <input id="file" type="text" placeholder="رابط التحميل (Google Drive)">
+        
+        <button onclick="saveProduct()">حفظ المنتج</button>
+    </div>
+</div>
+
+</body>
+</html>
