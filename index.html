@@ -68,3 +68,18 @@
 
 </body>
 </html>
+<script>
+    let list = JSON.parse(localStorage.getItem("products") || "[]");
+
+    let container = document.getElementById("products");
+
+    list.forEach(p => {
+        container.innerHTML += `
+            <div class="product">
+                <h3>${p.name}</h3>
+                <p>السعر: ${p.price} جنيه</p>
+                <button onclick="window.location.href='/payment.html'">اشتري الآن</button>
+            </div>
+        `;
+    });
+</script>
