@@ -83,13 +83,57 @@
         `;
     });
 </script>
-<header style="background:#131921; padding:15px; display:flex; align-items:center; gap:20px; color:white;">
-    <h2 style="margin:0;">Digital Store</h2>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>Digital Store</title>
+<link rel="stylesheet" href="style.css">
+</head>
 
-    <input type="text" placeholder="ابحث عن منتج…" 
-    style="flex:1; padding:10px; border:none; border-radius:5px;">
+<body>
 
-    <button style="background:#febd69; border:none; padding:10px 15px; border-radius:5px; cursor:pointer;">
-        بحث
-    </button>
+<!-- ============= الهيدر ============= -->
+<header class="header">
+    <div class="logo">Digital Store</div>
+
+    <div class="search-box">
+        <input type="text" placeholder="ابحث عن منتج...">
+        <button>بحث</button>
+    </div>
+
+    <div class="account">
+        <a href="/admin.html">لوحة التحكم</a>
+    </div>
 </header>
+
+<!-- ============= المنتجات ============= -->
+<div class="products" id="products"></div>
+
+<script>
+    let list = JSON.parse(localStorage.getItem("products") || "[]");
+
+    let container = document.getElementById("products");
+
+    list.forEach(p => {
+        container.innerHTML += `
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200" alt="product">
+                <h3>${p.name}</h3>
+                <p class="price">${p.price} جنيه</p>
+
+                <button class="buy-btn" onclick="window.location.href='/payment.html'">
+                    اشتري الآن
+                </button>
+            </div>
+        `;
+    });
+</script>
+
+<!-- ============= الفوتر ============= -->
+<footer class="footer">
+    © 2025 Digital Store – جميع الحقوق محفوظة
+</footer>
+
+</body>
+</html>
