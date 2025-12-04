@@ -1,137 +1,107 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>صفحة المنتج</title>
+<title>المنتج</title>
 <link rel="stylesheet" href="style.css">
 
 <style>
-.product-page {
-    max-width: 900px;
+.product-box {
+    max-width: 1000px;
     margin: 30px auto;
     background: #fff;
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-}
-
-.product-flex {
     display: flex;
-    flex-wrap: wrap;
     gap: 20px;
 }
 
-.product-page img {
-    width: 300px;
-    border-radius: 10px;
+.product-img {
+    max-width: 350px;
+    border-radius: 8px;
 }
 
-.product-info {
-    flex: 1;
-}
-
-.stars {
+.rating span {
     color: #ffa41c;
-    margin: 10px 0;
     font-size: 20px;
 }
-
-.buy-btn-big {
-    background: #ffa41c;
-    padding: 15px;
-    border: none;
-    width: 100%;
-    border-radius: 6px;
-    font-size: 18px;
-    cursor: pointer;
-}
-
-.related-box {
-    margin-top: 40px;
-}
-
-.related-products {
-    display: flex;
-    gap: 15px;
-    overflow-x: auto;
-}
 </style>
-
 </head>
+
 <body>
 
 <!-- هيدر الموقع -->
 <header class="header">
-    <div class="logo">Digital Store</div>
+    <div class="logo" onclick="location.href='/'" style="cursor:pointer;">Digital Store</div>
 
     <div class="search-box">
-        <input type="text" placeholder="ابحث عن منتج...">
-        <button>بحث</button>
+        <input id="searchInput" type="text" placeholder="ابحث عن منتج...">
+        <button onclick="searchProduct()">بحث</button>
     </div>
 
     <div class="account">
-        <a href="/admin.html">لوحة التحكم</a>
+        <a href="/cart.html">🛒 السلة <span id="cart-count">0</span></a>
     </div>
 </header>
 
-<div class="product-page">
+<div class="product-box">
+    <img id="p-img" class="product-img">
 
-    <div class="product-flex">
-        <img id="product-image" src="https://via.placeholder.com/300">
+    <div>
+        <h2 id="p-name"></h2>
 
-        <div class="product-info">
-            <h2 id="product-name">اسم المنتج</h2>
-
-            <div class="stars">★★★★★</div>
-
-            <h3 id="product-price" style="color:#b12704;">السعر: —</h3>
-
-            <p id="product-desc">
-                وصف المنتج سيظهر هنا بعد الربط...
-            </p>
-
-            <button class="buy-btn-big" onclick="window.location.href='/payment.html'">
-                اشتري الآن
-            </button>
+        <div class="rating">
+            ⭐⭐⭐⭐⭐
         </div>
+
+        <h3 id="p-price"></h3>
+
+        <p id="p-desc"></p>
+
+        <button class="buy-btn-big" onclick="addToCart()">أضف إلى السلة</button>
+        <br><br>
+        <button class="buy-btn-big" onclick="buyNow()">اشتري الآن</button>
     </div>
-
-    <!-- منتجات مشابهة -->
-    <div class="related-box">
-        <h3>منتجات مشابهة</h3>
-
-        <div class="related-products" id="related"></div>
-    </div>
-
 </div>
 
 <script>
-// جلب بيانات المنتج من الرابط
-let params = new URLSearchParams(window.location.search);
-let id = params.get("id");
+let product = JSON.parse(localStorage.getItem("selectedProduct") || "{}");
 
-let list = JSON.parse(localStorage.getItem("products") || "[]");
-let product = list[id];
+document.getElementById("p-img").src = product.image;
+document.getElementById("p-name").innerText = product.name;
+document.getElementById("p-price").innerText = product.price + " جنيه";
+document.getElementById("p-desc").innerText = product.description;
 
-if (product) {
-    document.getElementById("product-name").innerText = product.name;
-    document.getElementById("product-price").innerText = product.price + " جنيه";
-    document.getElementById("product-desc").innerText = "هذا المنتج رقمي ويمكن تحميله بعد الدفع.";
+// Add to cart
+function addToCart() {
+    let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+    cart.push(product);
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    updateCartCount();
+    alert("تم إضافة المنتج إلى السلة!");
 }
 
-// عرض منتجات مشابهة
-list.forEach((p, index) => {
-    if (index != id) {
-        related.innerHTML += `
-            <div class="product-card">
-                <img src="https://via.placeholder.com/200">
-                <h3>${p.name}</h3>
-                <p class="price">${p.price} جنيه</p>
-                <button onclick="window.location.href='/product.html?id=${index}'">عرض</button>
-            </div>
-        `;
-    }
-});
+function buyNow() {
+    addToCart();
+    window.location.href = "/cart.html";
+}
+
+// search
+function searchProduct() {
+    let q = document.getElementById("searchInput").value;
+    localStorage.setItem("search", q);
+    window.location.href = "/search.html";
+}
+
+function updateCartCount() {
+    let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    document.getElementById("cart-count").innerText = cart.length;
+}
+
+updateCartCount();
 </script>
 
 </body>
