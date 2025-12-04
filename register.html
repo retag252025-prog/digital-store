@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>إنشاء حساب</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+.form-box {
+    max-width: 450px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+button {
+    width: 100%;
+    padding: 12px;
+    background: #FF9900;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="form-box">
+    <h2>إنشاء حساب جديد</h2>
+
+    <input id="name" type="text" placeholder="الاسم">
+    <input id="email" type="email" placeholder="البريد الإلكتروني">
+    <input id="password" type="password" placeholder="كلمة السر">
+
+    <button onclick="register()">إنشاء حساب</button>
+
+    <p>لديك حساب؟ <a href="login.html">تسجيل الدخول</a></p>
+</div>
+
+<script>
+function register() {
+    let user = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value
+    };
+
+    localStorage.setItem("user", JSON.stringify(user));
+
+    alert("تم إنشاء الحساب بنجاح!");
+    window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>
