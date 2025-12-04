@@ -3,65 +3,139 @@ if (localStorage.getItem("loggedIn") !== "true") {
     alert("يجب تسجيل الدخول أولاً");
     window.location.href = "login.html";
 }
-</script><!DOCTYPE html>
+</script>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>الدفع</title>
-    <style>
-        body {
-            font-family: Arial;
-            background:#f2f2f2;
-            padding:20px;
-        }
-        .box {
-            background:#fff;
-            padding:25px;
-            margin:auto;
-            max-width:480px;
-            border-radius:12px;
-            box-shadow:0 4px 10px rgba(0,0,0,0.1);
-        }
-        button {
-            background:#007bff;
-            color:#fff;
-            padding:12px;
-            border:none;
-            border-radius:6px;
-            width:100%;
-            font-size:16px;
-            cursor:pointer;
-        }
-        input, textarea {
-            width:100%;
-            padding:12px;
-            margin:10px 0;
-            border-radius:6px;
-            border:1px solid #ccc;
-            font-size:15px;
-        }
-        h2 { color:#333; }
-        h3 { color:#d11; }
-    </style>
+<meta charset="UTF-8">
+<title>الدفع</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+.payment-box {
+    max-width: 800px;
+    margin: 25px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #FF9900;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.summary {
+    background: #f7f7f7;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+</style>
 </head>
+
 <body>
-<div class="box">
-    <h2>الدفع</h2>
 
-    <p>لإتمام عملية الشراء، يرجى إرسال قيمة المنتج على رقم:</p>
+<header class="header">
+  <div class="logo" onclick="location.href='/'" style="cursor:pointer;">Digital Store</div>
+  <div class="account">
+    <a href="/cart.html">🛒 السلة <span id="cart-count">0</span></a>
+  </div>
+</header>
 
-    <h3>01126994358 (Etisalat Cash)</h3>
+<script>
+// حماية الصفحة
+if (localStorage.getItem("loggedIn") !== "true") {
+    alert("يجب تسجيل الدخول أولاً");
+    window.location.href = "login.html";
+}
+</script>
 
-    <p>بعد الدفع، قم بملء البيانات التالية ورفع صورة الإيصال:</p>
+<div class="payment-box">
 
-    <form>
-        <input type="text" placeholder="اسمك" required>
-        <input type="email" placeholder="البريد الإلكتروني" required>
-        <textarea placeholder="اسم المنتج" required></textarea>
-        <input type="file" accept="image/*" required>
+<h2>إتمام عملية الدفع</h2>
 
-        <button>إرسال الإيصال</button>
-    </form>
+<h3>📦 ملخص الطلب</h3>
+<div class="summary" id="summary"></div>
+
+<h3>👤 بيانات العميل</h3>
+
+<input id="name" type="text" placeholder="الاسم" required>
+<input id="phone" type="text" placeholder="رقم الهاتف" required>
+<input id="address" type="text" placeholder="العنوان" required>
+
+<h3>💳 اختر طريقة الدفع</h3>
+
+<select id="method">
+    <option value="vodafone">فودافون كاش</option>
+    <option value="fawry">فوري</option>
+    <option value="bank">تحويل بنكي</option>
+</select>
+
+<button onclick="confirmPayment()">تأكيد الدفع</button>
+
 </div>
+
+<script>
+// تحميل السلة
+let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+// عرض ملخص السلة
+let s = "";
+let total = 0;
+
+cart.forEach(item => {
+    s += `<p>• ${item.name} — ${item.price} جنيه</p>`;
+    total += Number(item.price);
+});
+
+document.getElementById("summary").innerHTML = `
+    ${s}
+    <hr>
+    <h3>الإجمالي: ${total} جنيه</h3>
+`;
+
+function confirmPayment() {
+    let order = {
+        name: document.getElementById("name").value,
+        phone: document.getElementById("phone").value,
+        address: document.getElementById("address").value,
+        method: document.getElementById("method").value,
+        items: cart,
+        total: total,
+        date: new Date().toLocaleString()
+    };
+
+    // حفظ الطلب
+    localStorage.setItem("lastOrder", JSON.stringify(order));
+
+    // تفريغ السلة
+    localStorage.removeItem("cart");
+
+    window.location.href = "success.html";
+}
+
+// تحديث عداد السلة
+function updateCartCount() {
+    let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    document.getElementById("cart-count").innerText = cart.length;
+}
+updateCartCount();
+</script>
+
 </body>
 </html>
