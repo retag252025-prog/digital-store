@@ -156,3 +156,22 @@ footer {
   padding: 20px;
   text-align: center;
 }
+.rating-box {
+    margin-top: 20px;
+    font-size: 22px;
+}
+
+.stars {
+    cursor: pointer;
+    font-size: 28px;
+    color: #ddd;
+}
+
+.stars span {
+    padding: 3px;
+    font-size: 30px;
+}
+
+.stars .active {
+    color: #ffb400;
+}
