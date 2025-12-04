@@ -93,3 +93,63 @@ body {
     text-align: center;
     margin-top: 30px;
 }
+/* ====== Amazon Style Header ====== */
+header {
+  background-color: #131921;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+header h1 {
+  color: #FF9900;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* ====== Page Background ====== */
+body {
+  background-color: #F3F3F3;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* ====== Product Cards ====== */
+.product-card {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+
+.product-card:hover {
+  transform: scale(1.03);
+  border-color: #FF9900;
+}
+
+/* Button Amazon Style */
+button, .buy-btn {
+  background-color: #FF9900;
+  color: #111;
+  border: none;
+  padding: 12px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+button:hover, .buy-btn:hover {
+  background-color: #e68a00;
+}
+
+/* ====== Footer ====== */
+footer {
+  background-color: #131921;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
