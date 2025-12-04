@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<title>نتائج البحث</title>
+<link rel="stylesheet" href="style.css" />
+
+<style>
+.search-results {
+    max-width: 1200px;
+    margin: 25px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.search-item {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    transition: 0.2s;
+}
+
+.search-item:hover {
+    transform: scale(1.03);
+    border-color: #ffa41c;
+}
+
+.search-item img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.price {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 5px 0;
+    color: #111;
+}
+
+.view-btn {
+    background: #FF9900;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="logo" onclick="location.href='/'" style="cursor:pointer;">Digital Store</div>
+
+    <div class="search-box">
+        <input id="searchInput" type="text" placeholder="ابحث مرة أخرى...">
+        <button onclick="searchAgain()">بحث</button>
+    </div>
+
+    <div class="account">
+        <a href="/cart.html">🛒 السلة <span id="cart-count">0</span></a>
+    </div>
+</header>
+
+<h2 style="text-align:center;">نتائج البحث</h2>
+
+<div class="search-results" id="results"></div>
+
+<script>
+// استرجاع كلمة البحث
+let query = localStorage.getItem("search") || "";
+
+// استرجاع كل المنتجات
+let products = JSON.parse(localStorage.getItem("allProducts") || "[]");
+
+// فلترة المنتجات
+let filtered = products.filter(p =>
+    p.name.includes(query) ||
+    p.description.includes(query)
+);
+
+let box = document.getElementById("results");
+
+filtered.forEach((p, i) => {
+    box.innerHTML += `
+        <div class="search-item">
+            <img src="${p.image}">
+            <h3>${p.name}</h3>
+            <div class="price">${p.price} جنيه</div>
+            <button class="view-btn" onclick='viewProduct(${i})'>عرض المنتج</button>
+        </div>
+    `;
+});
+
+function viewProduct(i) {
+    localStorage.setItem("selectedProduct", JSON.stringify(filtered[i]));
+    window.location.href = "/product.html";
+}
+
+function searchAgain() {
+    let q = document.getElementById("searchInput").value;
+    localStorage.setItem("search", q);
+    location.reload();
+}
+
+// تحديث عدد السلة
+function updateCartCount() {
+    let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    document.getElementById("cart-count").innerText = cart.length;
+}
+updateCartCount();
+</script>
+
+</body>
+</html>
